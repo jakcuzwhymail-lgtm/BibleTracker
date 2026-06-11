@@ -1,14 +1,8 @@
-const bible = {
-  Genesis: 50,
-  Exodus: 40,
-  Leviticus: 27
-  // you can expand later or load full dataset
-};
+let openBook = null;
 
-let progress = JSON.parse(localStorage.getItem("bibleProgress")) || {};
-
-function save() {
-  localStorage.setItem("bibleProgress", JSON.stringify(progress));
+function toggleBook(book) {
+  openBook = openBook === book ? null : book;
+  render();
 }
 
 function toggle(book, chapter) {
@@ -33,16 +27,23 @@ function render() {
     const bookDiv = document.createElement("div");
     bookDiv.className = "book";
 
+    const isOpen = openBook === book;
+
     bookDiv.innerHTML = `
-      <h2>${book} (${done}/${total})</h2>
-      <div class="chapters">
+      <div class="book-header" onclick="toggleBook('${book}')">
+        <h2>${book} (${done}/${total})</h2>
+        <span>${isOpen ? "▲" : "▼"}</span>
+      </div>
+
+      <div class="chapters ${isOpen ? "open" : "closed"}">
         ${Array.from({ length: total }, (_, i) => {
           const chapter = i + 1;
           const key = `${book}-${chapter}`;
           const checked = progress[key] ? "checked" : "";
+
           return `
             <label>
-              <input type="checkbox" ${checked} 
+              <input type="checkbox" ${checked}
                 onchange="toggle('${book}', ${chapter})">
               ${chapter}
             </label>
