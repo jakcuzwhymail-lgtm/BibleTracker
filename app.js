@@ -28,27 +28,22 @@ const bible = {
   Jude: 1, Revelation: 22
 };
 
-// saved data
 let progress = JSON.parse(localStorage.getItem("progress")) || {};
-
 let openBook = null;
 
 let currentBook = localStorage.getItem("currentBook") || "Genesis";
 let currentChapter = parseInt(localStorage.getItem("currentChapter") || "1");
-
-let lastActiveDate = localStorage.getItem("lastActiveDate");
-let streak = parseInt(localStorage.getItem("streak") || "0");
 
 function save() {
   localStorage.setItem("progress", JSON.stringify(progress));
 }
 
 function toggleBook(book) {
-  openBook = openBook === book ? null : book;
+  openBook = (openBook === book) ? null : book;
   render();
 }
 
-function toggle(book, chapter) {
+function toggleChapter(book, chapter) {
   const key = `${book}-${chapter}`;
   progress[key] = !progress[key];
   save();
@@ -59,42 +54,25 @@ function toggle(book, chapter) {
   localStorage.setItem("currentBook", currentBook);
   localStorage.setItem("currentChapter", currentChapter);
 
-  updateStreak();
   render();
 }
 
-function updateStreak() {
-  const today = new Date().toDateString();
-
-  if (lastActiveDate === today) return;
-
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  if (lastActiveDate === yesterday.toDateString()) {
-    streak++;
-  } else {
-    streak = 1;
-  }
-
-  lastActiveDate = today;
-
-  localStorage.setItem("streak", streak);
-  localStorage.setItem("lastActiveDate", lastActiveDate);
-}
-
 function goToContinue() {
-  alert(`Continue at: ${currentBook} ${currentChapter}`);
+  const el = document.getElementById(`${currentBook}-${currentChapter}`);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.parentElement.style.background = "#fff3a0";
+  } else {
+    alert(`${currentBook} ${currentChapter}`);
+  }
 }
 
 function render() {
   const container = document.getElementById("books");
   container.innerHTML = "";
 
-  document.getElementById("stats").innerHTML = `
-    <h3>🔥 Streak: ${streak} days</h3>
-    <p>📖 Last reading: ${currentBook} ${currentChapter}</p>
-  `;
+  document.getElementById("stats").innerHTML =
+    `📖 Last: ${currentBook} ${currentChapter}`;
 
   for (let book in bible) {
     const total = bible[book];
@@ -106,13 +84,13 @@ function render() {
 
     const isOpen = openBook === book;
 
-    const bookDiv = document.createElement("div");
-    bookDiv.className = "book";
+    const div = document.createElement("div");
+    div.className = "book";
 
-    bookDiv.innerHTML = `
+    div.innerHTML = `
       <div class="book-header" onclick="toggleBook('${book}')">
-        <h2>${book} (${done}/${total})</h2>
-        <span>${isOpen ? "▲" : "▼"}</span>
+        <strong>${book}</strong>
+        <span>${done}/${total}</span>
       </div>
 
       <div class="chapters ${isOpen ? "open" : ""}">
@@ -122,9 +100,9 @@ function render() {
           const checked = progress[key] ? "checked" : "";
 
           return `
-            <label>
+            <label id="${book}-${chapter}">
               <input type="checkbox" ${checked}
-                onchange="toggle('${book}', ${chapter})">
+                onchange="toggleChapter('${book}', ${chapter})">
               ${chapter}
             </label>
           `;
@@ -132,7 +110,7 @@ function render() {
       </div>
     `;
 
-    container.appendChild(bookDiv);
+    container.appendChild(div);
   }
 }
 
