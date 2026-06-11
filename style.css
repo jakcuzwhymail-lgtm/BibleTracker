@@ -1,24 +1,36 @@
-body {
-  font-family: Arial;
-  margin: 20px;
-  background: #f4f4f4;
+.book-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  background: #eaeaea;
+  border-radius: 8px;
 }
 
-.book {
-  background: white;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
+.book-header:hover {
+  background: #ddd;
 }
 
 .chapters {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.25s ease;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  padding: 0 10px;
+}
+
+.chapters.open {
+  max-height: 500px;
+  opacity: 1;
+  padding: 10px;
 }
 
 label {
-  background: #eee;
+  background: #f2f2f2;
   padding: 5px;
   border-radius: 5px;
 }
