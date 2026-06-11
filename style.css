@@ -1,3 +1,26 @@
+body {
+  font-family: Arial;
+  margin: 20px;
+  background: #f4f4f4;
+}
+
+button {
+  padding: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+#stats {
+  margin-bottom: 10px;
+}
+
+.book {
+  background: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
 .book-header {
   display: flex;
   justify-content: space-between;
