@@ -10,25 +10,19 @@ button {
   cursor: pointer;
 }
 
-#stats {
-  margin-bottom: 10px;
-}
-
 .book {
   background: white;
-  padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .book-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  padding: 10px;
+  padding: 12px;
   background: #eaeaea;
-  border-radius: 8px;
+  cursor: pointer;
 }
 
 .book-header:hover {
@@ -36,20 +30,14 @@ button {
 }
 
 .chapters {
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition: all 0.25s ease;
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 0 10px;
+  padding: 10px;
 }
 
 .chapters.open {
-  max-height: 500px;
-  opacity: 1;
-  padding: 10px;
+  display: flex;
 }
 
 label {
